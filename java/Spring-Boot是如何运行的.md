@@ -94,6 +94,7 @@
   public @interface FieldInfo {  
       int[] value();  
   }  
+  
   // 适用方法  
   @Retention(RetentionPolicy.RUNTIME)  
   @Target(ElementType.METHOD)  
@@ -176,8 +177,9 @@ public class JooqAutoConfiguration {
 }
 ```
 
+
+
+
+
 ## 运行原理
 
-
-
-## 运行原理
