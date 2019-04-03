@@ -108,9 +108,76 @@
 
 被注解的注解就是上面说的组合注解。Spring Framework本身实现了很多组合注解，比如**@Configuration**就是一个组合注解。因此有了这样的一个条件，Spring-Boot的实现才有了基础条件。
 
-## 条件注解
+
+
+## 条件注解 @Conditional
+
+
+
+Spring 4提供了一个通用的基于条件的注解 **@Conditional** ，该注解可以**根据满足某一个特定条件与否来决定是否创建某个Bean** ， 例如，某个依赖包jar在一个类路径的时候，自动配置一个或多个Bean时，可以通过**@Conditional** 注解来实现只有某个Bean被创建时才会创建另一个Bean。这样可以依据特定条件来控制Bean的创建行为。这样的话就可以通过这个特性机制来实现一些**自动配置**。
+
+
+
+而这一点对于Spring-Boot实现自动配置来说是一个核心基础能力。在Spring-Boot中以**@Conditional** 为元注解用重新定义了一组针对不同场景的组合条件注解：
+
+```java
+@ConditionalOnBean //当容器中有指定Bean的条件下进行实例化
+
+@ConditionalOnMissingBean //当容器中没有指定Bean的条件下进行实例化
+
+@ConditionalOnClass //当classpath类路径下有指定类的条件下进行实例化
+
+@ConditionalOnMissingClass //当classpath类路径下没有指定类的条件下进行实例化
+
+@ConditionalOnWebApplication //当project是一个web时进行实例化
+
+@ConditionalOnNotWebApplication //当project不是一个web时进行实例化
+
+@ConditionalOnProperty //当指定的属性有指定的值时进行实例化
+
+@ConditionalOnExpression //基于SpEL表达式条件判断
+
+@ConditionalOnJava //当JVM版本为指定的版本范围时触发实例化
+
+@ConditionalOnResource //当类路径下有指定的资源时触发实例化
+
+@ConditionalOnJndi //在Jndi的条件下触发实例化
+
+@ConditionalOnSingleCandidate //当指定Bean在容器中有一个，或者多个但是指定了首选Bean时触发实例化
+```
+
+
+
+纵观Spring-Boot的一些核心注解，基于@Conditional元注解的组合注解就占了很大部分，在Spring-Boot源码项目**spring-boot-autoconfigure** 中，随意打开一个AutoConfiguration文件，都会看到上述条件注解的使用。
+
+```java
+@Configuration
+@ConditionalOnClass(DSLContext.class)
+@ConditionalOnBean(DataSource.class)
+@AutoConfigureAfter({DataSourceAutoConfiguration.class,
+      				 TransactionAutoConfiguration.class })
+public class JooqAutoConfiguration {
+
+   @Bean
+   @ConditionalOnMissingBean
+   public DataSourceConnectionProvider dataSourceConnectionProvider(DataSource ds) {
+      return new DataSourceConnectionProvider(
+            new TransactionAwareDataSourceProxy(ds)
+      );
+   }
+
+   @Bean
+   @ConditionalOnBean(PlatformTransactionManager.class)
+   public SpringTransactionProvider transactionProvider(PlatformTransactionManager m) {
+      return new SpringTransactionProvider(m);
+   }
+    
+    //...
+}
+```
+
+## 运行原理
 
 
 
 ## 运行原理
-
