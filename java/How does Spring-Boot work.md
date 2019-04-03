@@ -1,5 +1,11 @@
 # Spring-Boot是如何运行的 #
 
+
+
+> Spring-Boot
+
+
+
 ![](https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2656353677,2997395625&fm=26&gp=0.jpg)
 
 初识Spring-Boot时，认为其使用方式与Spring Framework并无多大差异，无非就是将配置注解化，提供更多的基础能力，使开发人员更加简单快速的开发自身业务的升级版Spring Framework。然而在使用了一段时间后发现其实并没有这么简单，Spring再一次的惊艳到我，这种设计理念简直优秀。为此对Spring-Boot的实现原理有了一定兴趣。在网上看了一些大牛的文章，将其转载过来，用以学习。
