@@ -183,3 +183,44 @@ public class JooqAutoConfiguration {
 
 ## 运行原理
 
+前面了解了Spring-Boot自动配置的一些关键点，现在结合Spring-Boot最核心的组合注解**@SpringBootApplication** 来分析Spring-Boot是如何启动运行的。
+
+![](D:\gitee\blog\java\Spring-Boot是如何运行的.assets\未命名文件.png)
+
+@SpringBootApplication除了对应用开放的@ComponentScan注解（实现对开发者定义的应用包扫描）外，其最核心的注解就是**@EnableAutoConfiguration** ,该注解表示开启自动配置功能，而在具体的实现上则是通过导入**@Import（EnableAutoConfigurationImportSelector.class）** 类的实例。在逻辑上实现了对所依赖的核心jar下**META/INFO/spring-factories**文件的扫描。该文件申明了有哪些自动配置需要被Spring容器加载，从而Spring-Boot应用程序就能自动加载Spring核心容器配置，以及其他依赖的项目组件配置，从而最终完成应用的自动初始化，通过这种方法就像开发者屏蔽了启动加载的过程。
+
+
+
+如“spring-boot-autoconfigure”核心包中的**META-INF/spring.factories**文件就是定义了需要加载的Spring Boot项目所依赖的基础配置类，如Spring的容器初始化配置类等。如：
+
+
+
+```java
+# Initializers
+org.springframework.context.ApplicationContextInitializer=\
+org.springframework.boot.autoconfigure.SharedMetadataReaderFactoryContextInitializer,\
+org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener
+
+# Application Listeners
+org.springframework.context.ApplicationListener=\
+org.springframework.boot.autoconfigure.BackgroundPreinitializer
+
+# Auto Configuration Import Listeners
+org.springframework.boot.autoconfigure.AutoConfigurationImportListener=\
+org.springframework.boot.autoconfigure.condition.ConditionEvaluationReportAutoConfigurationImportListener
+
+# Auto Configuration Import Filters
+org.springframework.boot.autoconfigure.AutoConfigurationImportFilter=\
+org.springframework.boot.autoconfigure.condition.OnClassCondition
+
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration,\
+org.springframework.boot.autoconfigure.aop.AopAutoConfiguration,\
+org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration,\
+org.springframework.boot.autoconfigure.batch.BatchAutoConfiguration,\
+
+......
+```
+
+而对于大部分第三方需要与Spring-Boot集成的框架，或者自己日常开发中需要进行抽象的公共组件而言，得益于这种机制，也可以很容易地定制成开箱即用的各种starter组件。而使用这些组件的用户，往往只需要将依赖引入就好，不再需要进行任何额外的配置了！
