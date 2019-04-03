@@ -28,7 +28,78 @@
 
 其实Spring-Boot是在Spring Framework的基础之上做的一次二次封装，最重要的特点就是Spring-Boot定义了一些新的注解来实行一些Spring注解 组合。而Spring注解则是基于JDK1.5+后的注解功能支持来完成的。
 
+首先要了解元注解：
 
+- 定义
+
+```java
+@Retention //定义注解的保留策略
+
+@Retention(RetentionPolicy.SOURCE) //注解仅存在于源码中 ， 在class字节码文件中不包含
+
+@Retention(RetentionPolicy.CLASS) //默认的保留策略，在class字节码文件中存在，在运行时无法获得
+
+@Retention(RetentionPolicy.RUNTIME) //在class字节码文件中存在，运行时可通过反射获得
+```
+
+需要知道注解的生命周期 SOURCE < CLASS < RUNTIME ，所以前者作用的地方后者一定作用。
+
+一般需要在运行时去动态的获得注解，则只能使用RUNTIME；
+
+需要在编译时进行一些预处理，比如生成一些辅助代码，就用CLASS注解；
+
+只是做一些检查性操作，比如@Override，使用SOURCE注解。
+
+
+
+- 目标
+
+  ```java
+  @Target //定义注解作用目标
+  
+  @Target(ElementType.TYPE)   //接口、类、枚举、注解
+  @Target(ElementType.FIELD) //字段、枚举的常量
+  @Target(ElementType.METHOD) //方法
+  @Target(ElementType.PARAMETER) //方法参数
+  @Target(ElementType.CONSTRUCTOR)  //构造函数
+  @Target(ElementType.LOCAL_VARIABLE)//局部变量
+  @Target(ElementType.ANNOTATION_TYPE)//注解
+  @Target(ElementType.PACKAGE) ///包
+  
+   
+  @Document //说明该注解将被包含在javadoc中
+  @Inherited //说明子类可以继承父类中的该注解
+  ```
+
+  举例
+
+  ```java
+  // 适用类、接口（包括注解类型）或枚举  
+  @Retention(RetentionPolicy.RUNTIME)  
+  @Target(ElementType.TYPE)  
+  public @interface ClassInfo {  
+      String value();  
+  }  
+      
+  // 适用field属性，也包括enum常量  
+  @Retention(RetentionPolicy.RUNTIME)  
+  @Target(ElementType.FIELD)  
+  public @interface FieldInfo {  
+      int[] value();  
+  }  
+  // 适用方法  
+  @Retention(RetentionPolicy.RUNTIME)  
+  @Target(ElementType.METHOD)  
+  public @interface MethodInfo {  
+      String name() default "long";  
+      String data();  
+      int age() default 27;  
+  }  
+  ```
+
+
+
+被注解的注解就是上面说的组合注解。Spring Framework本身实现了很多组合注解，比如**@Configuration**就是一个组合注解。因此有了这样的一个条件，Spring-Boot的实现才有了基础条件。
 
 ## 条件注解
 
