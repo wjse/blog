@@ -185,7 +185,11 @@ public class JooqAutoConfiguration {
 
 前面了解了Spring-Boot自动配置的一些关键点，现在结合Spring-Boot最核心的组合注解**@SpringBootApplication** 来分析Spring-Boot是如何启动运行的。
 
-![](https://github.com/wjse/blog/blob/master/java/assets/Spring-Boot是如何运行的.png)
+
+
+![](<https://github.com/wjse/blog/blob/master/java/assets/Spring-Boot%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E8%A1%8C%E7%9A%84.png>)
+
+
 
 @SpringBootApplication除了对应用开放的@ComponentScan注解（实现对开发者定义的应用包扫描）外，其最核心的注解就是**@EnableAutoConfiguration** ,该注解表示开启自动配置功能，而在具体的实现上则是通过导入**@Import（EnableAutoConfigurationImportSelector.class）** 类的实例。在逻辑上实现了对所依赖的核心jar下**META/INFO/spring-factories**文件的扫描。该文件申明了有哪些自动配置需要被Spring容器加载，从而Spring-Boot应用程序就能自动加载Spring核心容器配置，以及其他依赖的项目组件配置，从而最终完成应用的自动初始化，通过这种方法就像开发者屏蔽了启动加载的过程。
 
