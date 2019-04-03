@@ -193,7 +193,7 @@ public class JooqAutoConfiguration {
 
 
 
-![](<https://github.com/wjse/blog/blob/master/java/assets/Spring-Boot%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%90%E8%A1%8C%E7%9A%84.png>)
+![](<https://github.com/wjse/blog/blob/master/java/assets/How does Spring-Boot work.png>)
 
 
 
