@@ -106,7 +106,7 @@
 
 
 
-被注解的注解就是上面说的组合注解。Spring Framework本身实现了很多组合注解，比如**@Configuration**就是一个组合注解。因此有了这样的一个条件，Spring-Boot的实现才有了基础条件。
+被注解的注解就是上面说的组合注解。Spring Framework本身实现了很多组合注解，比如 **@Configuration** 就是一个组合注解。因此有了这样的一个条件，Spring-Boot的实现才有了基础条件。
 
 ## 条件注解
 
