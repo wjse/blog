@@ -26,6 +26,8 @@ public class ThreadLocal1 {
             // p.name = "李四";
             tl.set(new Person());
         }).start();
+
+        tl.remove();
     }
 
     static class Person{
