@@ -1,7 +1,6 @@
 package com.k66.concurrent.t04;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**

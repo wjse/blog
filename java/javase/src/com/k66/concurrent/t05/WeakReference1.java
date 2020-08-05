@@ -1,7 +1,5 @@
 package com.k66.concurrent.t05;
 
-import com.sun.org.apache.xml.internal.security.encryption.ReferenceList;
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import java.io.IOException;
 import java.lang.ref.PhantomReference;
 import java.lang.ref.Reference;

@@ -2,7 +2,6 @@ package com.k66.concurrent.t03;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.TimeUnit;
 
 /**
  * "栅栏"
