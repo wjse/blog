@@ -2,10 +2,8 @@ package com.k66.concurrent.t06.map;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CountDownLatch;
 
 public class ConcurrentHashMap1 {

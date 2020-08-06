@@ -1,50 +1,37 @@
-package com.k66.concurrent.t03;
+package com.k66.concurrent.t06.queue;
 
-import java.util.concurrent.Exchanger;
+import java.util.concurrent.LinkedTransferQueue;
 
-/**
- * 两个线程数据交换
- * 应用场景，比如游戏中进行交易
- */
-public class Exchanger1 {
+public class TransferQueue1 {
 
-    static Exchanger<String> exchanger = new Exchanger<>();
+    public static void main(String[] args) throws InterruptedException {
+        LinkedTransferQueue<String> strs = new LinkedTransferQueue<>();
 
-    public static void main(String[] args) {
         new Thread(() -> {
-            String s = "T1";
             try {
-                s = exchanger.exchange(s);// 阻塞的
+                System.out.println(strs.take());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println(Thread.currentThread().getName() + " " + s);
-        } , "t1").start();
+        }).start();
 
-        new Thread(() -> {
-            String s = "T2";
-            try {
-                s = exchanger.exchange(s);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println(Thread.currentThread().getName() + " " + s);
-        } , "t2").start();
+        //区别于put()在于，put是一个线程放完数据即走了，而transfer会使线程阻塞，直到另一个线程取走才走。
+        strs.transfer("aaa");
     }
 
     static class Test{
-        static Exchanger<String> q = new Exchanger<>();
+        static LinkedTransferQueue<String> q = new LinkedTransferQueue<>();
         static String[] strs = new String[]{"A","B","C","D","E","F","G"};
         static String[] nums = new String[]{"1","2","3","4","5","6","7"};
 
         public static void main(String[] args) {
-
             new Thread(() -> {
                 for(int i = 0 ; i < nums.length ; i++){
                     try {
-                        String s = nums[i];
-                        s = q.exchange(s);
+                        String s = q.take();
                         System.out.println(Thread.currentThread().getName() + " " + s);
+                        s = nums[i];
+                        q.transfer(s);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -54,9 +41,13 @@ public class Exchanger1 {
             new Thread(() -> {
                 for(int i = 0 ; i < strs.length ; i++){
                     try {
-                        String s = strs[i];
-                        s = q.exchange(s);
+                        if(i == 0){
+                            q.transfer(strs[i]);
+                        }
+                        String s = q.take();
                         System.out.println(Thread.currentThread().getName() + " " + s);
+                        s = strs[i];
+                        q.transfer(s);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
