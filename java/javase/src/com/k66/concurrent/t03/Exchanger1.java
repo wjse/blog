@@ -31,37 +31,4 @@ public class Exchanger1 {
             System.out.println(Thread.currentThread().getName() + " " + s);
         } , "t2").start();
     }
-
-    static class Test{
-        static Exchanger<String> q = new Exchanger<>();
-        static String[] strs = new String[]{"A","B","C","D","E","F","G"};
-        static String[] nums = new String[]{"1","2","3","4","5","6","7"};
-
-        public static void main(String[] args) {
-
-            new Thread(() -> {
-                for(int i = 0 ; i < nums.length ; i++){
-                    try {
-                        String s = nums[i];
-                        s = q.exchange(s);
-                        System.out.println(Thread.currentThread().getName() + " " + s);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } , "t1").start();
-
-            new Thread(() -> {
-                for(int i = 0 ; i < strs.length ; i++){
-                    try {
-                        String s = strs[i];
-                        s = q.exchange(s);
-                        System.out.println(Thread.currentThread().getName() + " " + s);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } , "t2").start();
-        }
-    }
 }

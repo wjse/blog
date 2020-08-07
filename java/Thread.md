@@ -285,9 +285,15 @@ JVM引用分为：
 
 在并发查询时ConcurrentHasMap的效率大大优于Hashtable等运用synchronized加锁的容器，基于Unsafe类的getObjectVolatile方法。
 
+### 7.2 优先级队列
 
+![image-1596763953017](assets/1596763953017.jpg)
 
-### 7.2 总结
+DelayQueue按时间排序队列，一般用来进行时间任务调度使用，基于PriorityQueue优先级队列实现。
+
+PriorityQueue优先级队列采用二叉树结构，运用“跳表”的概念，减低链表检索次数。
+
+### 7.3 总结
 
 Vector，Hashtable 自带锁，基本不用。
 
@@ -296,3 +302,11 @@ Queue与List区别
 Queue添加了对线程友好的API，包括offer(), peek(), poll()
 
 BlockingQueue在Queue的基础之上添加了put() , take() 阻塞行为，是MQ的基础，典型的生产者与消费者
+
+
+
+## 8 线程池
+
+如果线程池中线程的数量过多，最终它们会竞争稀缺的处理器和内存资源，浪费大量的时间在上下文切换上。反之，如果线程的数目过少，处理器的一些核可能就无法充分利用。线程池大小与处理器的利用率之比可以使用下面的公式进行估算：
+
+线程数=CPU核数 x 期望的CPU利用率(该值应该介于0和1之间) x (1 + 等待时间与计算时间的比率)
